@@ -47,3 +47,9 @@ variable "redirect_http_to_https" {
   type        = bool
   default     = false
 }
+
+variable "address_type" {
+  description = "The type of the address to reserve"
+  type        = string
+  default     = "EXTERNAL"
+}
