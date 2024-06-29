@@ -5,10 +5,11 @@ locals {
 resource "google_compute_backend_service" "lb_backend" {
   name = var.name
 
-  port_name        = var.instance_group_named_port_http
-  protocol         = "HTTP"
-  timeout_sec      = 60
-  session_affinity = "NONE"
+  port_name             = var.instance_group_named_port_http
+  protocol              = "HTTP"
+  timeout_sec           = 60
+  session_affinity      = "NONE"
+  load_balancing_scheme = var.load_balancing_scheme
 
   backend {
     group = var.instance_group_url
@@ -49,7 +50,7 @@ resource "google_compute_target_https_proxy" "lb_target_https_proxy" {
 }
 
 resource "google_compute_global_address" "ip" {
-  name = var.name
+  name         = var.name
   address_type = var.address_type
 }
 

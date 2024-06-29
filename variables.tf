@@ -53,3 +53,9 @@ variable "address_type" {
   type        = string
   default     = "EXTERNAL"
 }
+
+variable "load_balancing_scheme" {
+  description = "Indicates whether the backend service will be used with internal or external load balancing"
+  type        = string
+  default     = "EXTERNAL"
+}
