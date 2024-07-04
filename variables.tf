@@ -47,3 +47,15 @@ variable "redirect_http_to_https" {
   type        = bool
   default     = false
 }
+
+variable "address_type" {
+  description = "The type of the address to reserve"
+  type        = string
+  default     = "EXTERNAL"
+}
+
+variable "load_balancing_scheme" {
+  description = "Indicates whether the backend service will be used with internal or external load balancing"
+  type        = string
+  default     = "EXTERNAL"
+}

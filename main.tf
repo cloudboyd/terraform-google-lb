@@ -5,10 +5,11 @@ locals {
 resource "google_compute_backend_service" "lb_backend" {
   name = var.name
 
-  port_name        = var.instance_group_named_port_http
-  protocol         = "HTTP"
-  timeout_sec      = 60
-  session_affinity = "NONE"
+  port_name             = var.instance_group_named_port_http
+  protocol              = "HTTP"
+  timeout_sec           = 60
+  session_affinity      = "NONE"
+  load_balancing_scheme = var.load_balancing_scheme
 
   backend {
     group = var.instance_group_url
@@ -49,7 +50,8 @@ resource "google_compute_target_https_proxy" "lb_target_https_proxy" {
 }
 
 resource "google_compute_global_address" "ip" {
-  name = var.name
+  name         = var.name
+  address_type = var.address_type
 }
 
 resource "google_compute_url_map" "http_to_https_redirect" {
@@ -67,9 +69,10 @@ resource "google_compute_url_map" "http_to_https_redirect" {
 resource "google_compute_global_forwarding_rule" "lb_http_forwarding_rule" {
   name = "${var.name}-http-frontend"
 
-  target     = google_compute_target_http_proxy.lb_target_http_proxy.self_link
-  port_range = "80"
-  ip_address = google_compute_global_address.ip.address
+  target                = google_compute_target_http_proxy.lb_target_http_proxy.self_link
+  port_range            = "80"
+  ip_address            = google_compute_global_address.ip.address
+  load_balancing_scheme = var.load_balancing_scheme
 }
 
 resource "google_compute_global_forwarding_rule" "lb_https_forwarding_rule" {
@@ -77,7 +80,8 @@ resource "google_compute_global_forwarding_rule" "lb_https_forwarding_rule" {
 
   name = "${var.name}-https-frontend"
 
-  target     = join("", google_compute_target_https_proxy.lb_target_https_proxy.*.self_link)
-  port_range = "443"
-  ip_address = google_compute_global_address.ip.address
+  target                = join("", google_compute_target_https_proxy.lb_target_https_proxy.*.self_link)
+  port_range            = "443"
+  ip_address            = google_compute_global_address.ip.address
+  load_balancing_scheme = var.load_balancing_scheme
 }
