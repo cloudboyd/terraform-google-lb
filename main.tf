@@ -52,6 +52,8 @@ resource "google_compute_target_https_proxy" "lb_target_https_proxy" {
 resource "google_compute_global_address" "ip" {
   name         = var.name
   address_type = var.address_type
+  purpose      = var.address_type == "INTERNAL" ? var.purpose : null
+  network      = var.address_type == "INTERNAL" ? var.network : null
 }
 
 resource "google_compute_url_map" "http_to_https_redirect" {
