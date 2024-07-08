@@ -59,3 +59,14 @@ variable "load_balancing_scheme" {
   type        = string
   default     = "EXTERNAL"
 }
+
+variable "purpose" {
+  description = "The purpose of the resource"
+  type        = string
+  default     = "PRIVATE_SERVICE_CONNECT"
+}
+
+variable "network" {
+  description = "The URL of the network in which to reserve the IP range. This should only be set when using an Internal address"
+  type        = string
+}
